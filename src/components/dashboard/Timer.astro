@@ -1,0 +1,131 @@
+<div class="md:w-96 p-4 bg-stone-900 border border-stone-600 rounded-lg">
+  <div class="mb-4">
+    <div class="flex justify-center items-center gap-4">
+      <button
+        id="focusTimerButton"
+        class="px-2 py-1 rounded-lg hover:bg-stone-600"
+      >
+        Focus timer
+      </button>
+      <button
+        id="breakTimerButton"
+        class="px-2 py-1 rounded-lg hover:bg-stone-600"
+      >
+        Break timer
+      </button>
+    </div>
+  </div>
+  <div>
+    <div class="flex justify-center items-center">
+      <span id="timer" class="text-5xl font-semibold">00:00</span>
+    </div>
+    <div class="flex justify-center items-center gap-4 py-4">
+      <button
+        id="startTimerButton"
+        class="px-6 py-2 bg-emerald-600 border border-stone-100 rounded-lg"
+      >
+        Start
+      </button>
+      <button
+        id="pauseTimerButton"
+        class="px-6 py-2 bg-yellow-600 border border-stone-100 rounded-lg"
+      >
+        Pause
+      </button>
+      <button
+        id="stopTimerButton"
+        class="px-6 py-2 bg-red-600 border border-stone-100 rounded-lg"
+      >
+        Stop</button
+      >
+    </div>
+  </div>
+</div>
+
+<script>
+  enum TimerType {
+    Focus,
+    Break,
+  }
+
+  enum TimerState {
+    Started,
+    Paused,
+    Stopped,
+  }
+
+  const timerElement = document.getElementById("timer") as HTMLSpanElement;
+  const focusTimerButton = document.getElementById(
+    "focusTimerButton"
+  ) as HTMLButtonElement;
+  const breakTimerButton = document.getElementById(
+    "breakTimerButton"
+  ) as HTMLButtonElement;
+  const startTimerButton = document.getElementById(
+    "startTimerButton"
+  ) as HTMLButtonElement;
+  const pauseTimerButton = document.getElementById(
+    "pauseTimerButton"
+  ) as HTMLButtonElement;
+  const stopTimerButton = document.getElementById(
+    "stopTimerButton"
+  ) as HTMLButtonElement;
+
+  let timerType: TimerType = TimerType.Focus;
+  let timerState: TimerState = TimerState.Stopped;
+  let timerTimeSetting = 1500;
+  let timer;
+  let timerIntervalId: number;
+
+  function setupTimer() {
+    timer = timerTimeSetting;
+    timerElement.innerHTML = `${timer / 60}:00`;
+  }
+  setupTimer();
+
+  focusTimerButton.addEventListener("click", () => {
+    if (!timerElement) return;
+
+    timerTimeSetting = 1500;
+    setupTimer();
+  });
+
+  breakTimerButton.addEventListener("click", () => {
+    if (!timerElement) return;
+
+    timerTimeSetting = 300;
+    setupTimer();
+  });
+
+  startTimerButton.addEventListener("click", () => {
+    if (!timerElement) return;
+    if (timerState === TimerState.Started) return;
+
+    if (timerState === TimerState.Paused) {
+      timerState = TimerState.Started;
+    }
+
+    if (timerState === TimerState.Stopped) {
+      timerState = TimerState.Started;
+      timerIntervalId = setInterval(() => {
+        if (timerState === TimerState.Started) {
+          timer -= 1;
+          const minutes = Math.floor(timer / 60);
+          const remainder = timer % 60;
+
+          timerElement.innerHTML = `${minutes}:${remainder}`;
+        }
+      }, 1000);
+    }
+  });
+
+  pauseTimerButton.addEventListener("click", () => {
+    timerState = TimerState.Paused;
+  });
+
+  stopTimerButton.addEventListener("click", () => {
+    timerState = TimerState.Stopped;
+    setupTimer();
+    clearInterval(timerIntervalId);
+  });
+</script>

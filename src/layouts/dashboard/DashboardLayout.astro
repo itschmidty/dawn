@@ -1,0 +1,21 @@
+---
+import Layout from "../Layout.astro";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<Layout title=`Dawn - Dashboard - ${title}`>
+  <header class="px-4 py-2">
+    <div
+      class="container mx-auto py-2 px-4 bg-stone-900 border border-stone-600 rounded-lg"
+    >
+      <a href="/" class="">Home</a>
+    </div>
+  </header>
+
+  <slot />
+</Layout>

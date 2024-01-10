@@ -1,0 +1,28 @@
+---
+import DashboardLayout from "../../layouts/dashboard/DashboardLayout.astro";
+
+import Timer from "../../components/dashboard/Timer.astro";
+
+const username = "Schmidt";
+const date = new Date();
+---
+
+<DashboardLayout title="Home">
+  <main class="container mx-auto p-4">
+    <section>
+      <h1>Welcome, {username}</h1>
+      <h2>
+        Today is {date.toLocaleString("en-us", { weekday: "long" })}, {
+          date.toLocaleString("en-us", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })
+        }
+      </h2>
+    </section>
+    <section class="py-4">
+      <Timer />
+    </section>
+  </main>
+</DashboardLayout>
